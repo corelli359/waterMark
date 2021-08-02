@@ -7,7 +7,7 @@ import { Settings as waterConfig,WaterMark } from './modules/water_mark'
 
 let snakeController: SnakeController = new SnakeController()
 let wcfg: waterConfig = new waterConfig({
-    watermark_x: 100, watermark_y: 100
+    watermark_x: 100, watermark_y: 100,watermark_rows:20,watermark_cols:20
 })
 
 // let wcfg: waterConfig = new waterConfig(
