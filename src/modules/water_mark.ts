@@ -102,27 +102,27 @@ interface ISettings {
      *
      * @default 15
      */
-    watermark_angle?: number 
+    watermark_angle?: number
     /**
      * 水印的总体宽度
      *
      * @default body的scrollWidth和clientWidth的较大值
      */
-    watermark_parent_width?: number 
+    watermark_parent_width?: number
     /**
      * 水印的总体高度
      *
      * @default body的scrollHeight和clientHeight的较大值
      */
-    watermark_parent_height?: number 
+    watermark_parent_height?: number
     /**
      * 水印插件挂载的父元素element,不输入则默认挂在body上
      */
-    watermark_parent_node?: string 
+    watermark_parent_node?: string
     /**
      * monitor 是否监控， true: 不可删除水印 false: 可删水印。
      */
-    monitor?: boolean 
+    monitor?: boolean
 }
 
 
@@ -140,15 +140,10 @@ export class Settings implements ISettings {
     watermark_font = ""
     watermark_color = 'red'
     watermark_fontsize = '18px'
-    watermark_alpha = 0.15
+    watermark_alpha = 0.13
     watermark_width = 100
-    watermark_height = 100
-    watermark_angle = 15
-    // watermark_parent_width = undefined
-    // watermark_parent_height = undefined
-    // watermark_parent_node = undefined
-    // monitor = undefined
-
+    watermark_height = 20
+    watermark_angle = 15;
 
     constructor(objs: any = {}) {
         let intersection = [...new Set(Object.keys(this))].filter(x => new Set(Object.keys(objs)).has(x))
@@ -166,10 +161,14 @@ export class WaterMark {
     settings: Settings
     constructor(settings: Settings) {
         this.settings = settings
-    }
-
-    init() { }
+    };
     load() {
+
+        // resize重新加载水印
+        window.addEventListener('resize', () => {
+            this.load();
+        });
+
         /*如果元素存在则移除*/
         let watermark_element = document.getElementById(this.settings.watermark_id)
         watermark_element && watermark_element.parentNode && watermark_element.parentNode.removeChild(watermark_element)
@@ -207,7 +206,7 @@ export class WaterMark {
         /*创建水印外壳div*/
         let otdiv: HTMLElement | null = document.getElementById(this.settings.watermark_id)
         console.log(`otdiv --> ${otdiv}`)
-        let shadowRoot:any = null
+        let shadowRoot: any = null
         if (!otdiv) {
             otdiv = document.createElement('div');
             /*创建shadow dom*/
@@ -216,9 +215,9 @@ export class WaterMark {
             /*判断浏览器是否支持attachShadow方法*/
             if (typeof otdiv.attachShadow === 'function') {
                 /* createShadowRoot Deprecated. Not for use in new websites. Use attachShadow*/
-                shadowRoot = otdiv.attachShadow({ mode: 'open' });
+                shadowRoot = otdiv.attachShadow({ mode: 'open' })
             } else {
-                shadowRoot = otdiv;
+                shadowRoot = otdiv
             }
             /*将shadow dom随机插入body内的任意位置*/
             var nodeList = parentEle.children;
@@ -292,7 +291,7 @@ export class WaterMark {
                 mask_div.style.top = y + 'px';
                 mask_div.style.overflow = "hidden";
                 mask_div.style.zIndex = "9999999";
-                // mask_div.style.opacity = this.settings.watermark_alpha;
+                mask_div.style.opacity = this.settings.watermark_alpha.toString();
                 mask_div.style.fontSize = this.settings.watermark_fontsize;
                 mask_div.style.fontFamily = this.settings.watermark_font;
                 mask_div.style.color = this.settings.watermark_color;
@@ -307,13 +306,12 @@ export class WaterMark {
         }
 
         // 是否监控， true: 不可删除水印; false: 可删水印。
-        
+
         // if (this.settings.monitor  && hasObserver) {
         //     watermarkDom.observe(watermark_hook_element, option);
         //     watermarkDom.observe(document.getElementById(this.settings.watermark_id).shadowRoot, option);
         // }
 
     }
-    remove() { }
 }
 

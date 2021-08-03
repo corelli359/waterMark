@@ -1,13 +1,13 @@
 import './style/index.less'
 import { SnakeController } from './modules/controller'
-import { Settings as waterConfig,WaterMark } from './modules/water_mark'
+import { Settings as waterConfig, WaterMark } from './modules/water_mark'
 
 
 
 
 let snakeController: SnakeController = new SnakeController()
 let wcfg: waterConfig = new waterConfig({
-    watermark_x: 100, watermark_y: 100,watermark_rows:20,watermark_cols:20
+    watermark_x: 100, watermark_y: 100, watermark_rows: 20, watermark_cols: 20
 })
 
 // let wcfg: waterConfig = new waterConfig(
@@ -24,15 +24,15 @@ console.log("wm --> ", wm)
 
 function pluck<T, K extends keyof T>(o: T, names: K[]): T[K][] {
     return names.map(n => o[n]);
-  }
-  
-  interface Person {
-      name: string;
-      age: number;
-  }
-  let person: Person = {
-      name: 'Jarid',
-      age: 35
-  };
-  let strings: string[] = pluck(person, ['name']);
-  console.log(strings)
+}
+
+interface Person {
+    name: string;
+    age: number;
+}
+let person: Person = {
+    name: 'Jarid',
+    age: 35
+};
+let strings: string[] = pluck(person, ['name']);
+console.log(strings)
